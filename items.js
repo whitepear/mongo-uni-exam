@@ -155,7 +155,7 @@ function ItemDAO(database) {
     this.getNumItems = function(category, callback) {
         "use strict";
 
-        var numItems = 0;
+        // var numItems = 0;
 
         /*
          * TODO-lab1C:
@@ -171,10 +171,24 @@ function ItemDAO(database) {
          * of a call to the getNumItems() method.
          *
          */
+        if (category === 'All') {
+            var getNumItemsCursor = this.db.collection('item').find({});
+        } else {
+            var getNumItemsCursor = this.db.collection('item').find({category: category});       
+        }
+
+        getNumItemsCursor.toArray(function(err, docs) {
+            if (err) {
+                return console.error(err);
+            } else {
+                callback(docs.length);
+            }
+        });
+        
 
          // TODO Include the following line in the appropriate
          // place within your code to pass the count to the callback.
-        callback(numItems);
+         // callback(numItems);
     }
 
 
