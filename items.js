@@ -52,7 +52,7 @@ function ItemDAO(database) {
         *
         */
 
-        var categories = this.db.collection('item').aggregate( [
+        this.db.collection('item').aggregate( [
           { $match: { "category": {$ne: null} } },
           { $project: { category: 1, _id: 0} },
           { $group: {
