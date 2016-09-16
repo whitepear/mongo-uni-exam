@@ -62,7 +62,7 @@ function ItemDAO(database) {
           { $sort: { _id: 1} }
         ], function(err, result) {            
             if (err) {
-                return console.error(err);
+                return console.error('getCategories cursor error: ', err);
             } else {
                 var total = 0;
                 result.forEach(function (document) {
@@ -130,7 +130,7 @@ function ItemDAO(database) {
         
         getItemCursor.toArray(function(err, docs) {
             if (err) {
-                return console.error(err);
+                return console.error('getItems cursor error: ', err);
             } else {
                 return callback(docs);
             }
@@ -179,7 +179,7 @@ function ItemDAO(database) {
 
         getNumItemsCursor.toArray(function(err, docs) {
             if (err) {
-                return console.error(err);
+                return console.error('getNumItemsCursor error: ', err);
             } else {
                 callback(docs.length);
             }
