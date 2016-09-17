@@ -255,7 +255,7 @@ function ItemDAO(database) {
     this.getNumSearchItems = function(query, callback) {
         "use strict";
 
-        var numItems = 0;
+        // var numItems = 0;
 
         /*
         * TODO-lab2B
@@ -270,7 +270,21 @@ function ItemDAO(database) {
         * simply do this in the mongo shell.
         */
 
-        callback(numItems);
+        var numSearchCursor = this.db.collection('item').find({
+            $text: {
+                $search: query
+            }
+        });
+
+        numSearchCursor.toArray(function(err, docs) {
+            if (err) {
+                return console.error('numSearchCursor error: ', err);
+            } else {
+                return callback(docs.length);
+            }
+        });
+
+        // callback(numItems);
     }
 
 
