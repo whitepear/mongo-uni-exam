@@ -181,7 +181,7 @@ function ItemDAO(database) {
             if (err) {
                 return console.error('getNumItemsCursor error: ', err);
             } else {
-                callback(docs.length);
+                return callback(docs.length);
             }
         });
         
@@ -218,19 +218,37 @@ function ItemDAO(database) {
          * description. You should simply do this in the mongo shell.
          *
          */
+        
+        var searchCursor = this.db.collection('item').find({
+            $text: {
+                $search: query
+            }
+        });
 
-        var item = this.createDummyItem();
-        var items = [];
-        for (var i=0; i<5; i++) {
-            items.push(item);
-        }
+        searchCursor.sort({_id: 1});
+        searchCursor.skip(page * itemsPerPage);
+        searchCursor.limit(itemsPerPage);
+
+        searchCursor.toArray(function(err, docs) {
+            if (err) {
+                return console.error('searchCursor error: ', err);
+            } else {
+                return callback(docs);
+            }
+        });
+
+        // var item = this.createDummyItem();
+        // var items = [];
+        // for (var i=0; i<5; i++) {
+        //     items.push(item);
+        // }
 
         // TODO-lab2A Replace all code above (in this method).
 
         // TODO Include the following line in the appropriate
         // place within your code to pass the items for the selected page
         // of search results to the callback.
-        callback(items);
+        // callback(items);
     }
 
 
